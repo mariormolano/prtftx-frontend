@@ -1,4 +1,7 @@
 "use server";
+
+import { roleEnum } from "./roleEnum";
+
 const BackendUrl = process.env.BACKEND_URL || "http://localhost:3001";
 
 const login = async (email: string, password: string) => {
@@ -21,15 +24,22 @@ const login = async (email: string, password: string) => {
   return user;
 };
 
-const register = async (email: string, password: string) => {
+const register = async (
+  name: string,
+  email: string,
+  password: string,
+  roles: roleEnum
+) => {
   const config = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
+      name,
       email,
       password,
+      roles,
     }),
   };
   const res = await fetch(`${BackendUrl}/register`, config);
@@ -40,7 +50,7 @@ const register = async (email: string, password: string) => {
 };
 
 const validate = async (token: string) => {
-  if (token) {
+  if (token.length > 0) {
     const config = {
       method: "POST",
       headers: {
@@ -57,6 +67,7 @@ const validate = async (token: string) => {
     }
     return false;
   }
+  return false;
 };
 
 export { login, register, validate };

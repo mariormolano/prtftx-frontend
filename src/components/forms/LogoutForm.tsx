@@ -12,11 +12,12 @@ import { useRouter } from "next/navigation";
 const LogoutForm = () => {
   const router = useRouter();
   const { removeToken } = useAuthToken();
-  const { isAuth, logout } = useStore(authStore);
+  const { isAuth, logout, setTokenStatus } = useStore(authStore);
 
   const handleLogout = () => {
     removeToken();
     logout();
+    setTokenStatus(0);
     router.push("/");
   };
 

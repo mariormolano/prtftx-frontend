@@ -7,13 +7,17 @@ import { drawerStore } from "@/features/Drawer/drawerStore";
 
 import { typesStore } from "@/features/types/typesStore";
 import { propertiesStore } from "@/features/properties/propertiesStore";
+import { authStore } from "@/features/auth/authStore";
+
 import { useRouter } from "next/navigation";
+import { roleEnum } from "@/features/auth/roleEnum";
 
 const DownAppBar = () => {
   const router = useRouter();
   const { setIsOpen } = useStore(drawerStore);
   const { setTypesModeNew, typesMode } = useStore(typesStore);
   const { setPropertiesModeNew, propertiesMode } = useStore(propertiesStore);
+  const { role } = useStore(authStore);
   const StyledFab = styled(Fab)({
     position: "absolute",
     Index: 1,
@@ -54,9 +58,11 @@ const DownAppBar = () => {
   return (
     <AppBar position="fixed" color="primary" sx={{ top: "auto", bottom: 0 }}>
       <Toolbar>
-        <StyledFab color="secondary" aria-label="add" onClick={handleNew}>
-          <AddIcon />
-        </StyledFab>
+        {role === roleEnum.ADMIN ? (
+          <StyledFab color="secondary" aria-label="add" onClick={handleNew}>
+            <AddIcon />
+          </StyledFab>
+        ) : null}
         <Box sx={{ flexGrow: 1 }} />
         <IconButton color="inherit" onClick={handleLog}>
           <AccountBoxIcon />

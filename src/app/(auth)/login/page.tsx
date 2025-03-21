@@ -1,50 +1,35 @@
 "use client";
 import { useStore } from "exome/react";
+import { useEffect } from "react";
+
 import Box from "@mui/material/Box";
-import { authStore } from "@/features/auth/authStore";
 import { Tab } from "@mui/material";
 import { TabContext, TabList } from "@mui/lab";
+
 import LoginFrom from "@/components/forms/LoginForm";
 import RegisterForm from "@/components/forms/RegisterForm";
 import LogoutForm from "@/components/forms/LogoutForm";
-import { useEffect, useState } from "react";
-import useAuthToken from "@/features/auth/useAuthToken";
-import { validate } from "@/features/auth/authService";
 
+import { authStore } from "@/features/auth/authStore";
+
+import useAuthToken from "@/features/auth/useAuthToken";
 export default function Login() {
   const { loginModal, showLoginModal, showRegisterModal } = useStore(authStore);
 
-  const { isValidate } = useStore(authStore);
-  const [tokenStatus, setTokenStatus] = useState<number>(0);
-  const { token, removeToken } = useAuthToken();
+  const { tokenStatus, setTokenStatus } = useStore(authStore);
+  const { token } = useAuthToken();
 
   useEffect(() => {
-    console.log("Valor Token", typeof token);
-
-    if (typeof token === "string") {
-      if (token.length === 0) {
-        setTokenStatus(1);
-      } else {
-        validate(token)
-          .then((res) => {
-            if (res) {
-              setTokenStatus(2);
-              isValidate();
-              console.log("Token is valid");
-            } else {
-              setTokenStatus(1);
-              removeToken();
-              console.log("Token is invalid");
-            }
-          })
-          .catch(() => {
-            setTokenStatus(1);
-            removeToken();
-            console.log("Token is invalid");
-          });
+    if (tokenStatus === 0) {
+      if (typeof token !== "object") {
+        if (token.length > 0) {
+          setTokenStatus(2);
+        } else {
+          setTokenStatus(1);
+        }
       }
     }
-  }, [isValidate, token]);
+  }, [token]);
 
   const SelectForm = () => {
     console.log("Token", tokenStatus);
