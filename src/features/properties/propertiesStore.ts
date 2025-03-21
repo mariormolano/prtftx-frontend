@@ -41,12 +41,13 @@ class PropertiesStore extends Exome {
   async getPropertiesList(token: string) {
     const data = await getProperties(token);
     console.log("Solocitud de datos de propiedades");
-
     console.table(data);
-    data.map((property: PropertiesInterface) => {
-      this.propertiesList.push(property);
-    });
-    //this.propertiesList = propertiesMock as PropertiesInterface[];
+    if (data.success) {
+      const properties = data.properties;
+      this.propertiesList = properties as PropertiesInterface[];
+      return true;
+    }
+    return false;
   }
 
   async saveProperty(
@@ -57,62 +58,32 @@ class PropertiesStore extends Exome {
     console.log(property);
     const data = await createProperty(token, property);
     console.table(data);
-    // const newProperty = {
-    //   id: this.propertiesList.length + 1,
-    //   createdAt: new Date(),
-    //   name: property.name,
-    //   value: property.value,
-    // } as PropertiesInterface;
-    // const validate = {
-    //   newProperty,
-    //   selectedProperty: this.selectedProperty,
-    // };
-    // console.table(validate);
-    // this.propertiesList.push(newProperty);
+    if (data.success) {
+      return await this.getPropertiesList(token);
+    }
+    return false;
   }
 
   async updateProperty(token: string, property: PropertiesInterface) {
     console.log("Actualizando propiedad");
     console.log(property);
-
     const data = await updateProperty(token, property);
     console.table(data);
-    // if (data.success) {
-    //   const newPropertyList = this.propertiesList.map((p) =>
-    //     p.id === property.id ? property : p
-    //   );
-    //   const validate = {
-    //     newPropertyList,
-    //     oldPropertyList: this.propertiesList,
-    //   };
-    //   console.table(validate);
-    //   this.propertiesList = newPropertyList;
-    // }
+    if (data.success) {
+      return await this.getPropertiesList(token);
+    }
+    return false;
   }
-
-  //   const newPropertyList = this.propertiesList.map((p) =>
-  //     p.id === property.id ? property : p
-  //   );
-  //   const validate = {
-  //     newPropertyList,
-  //     oldPropertyList: this.propertiesList,
-  //   };
-  //   console.table(validate);
-  //   this.propertiesList = newPropertyList;
-  //   // this.propertiesList = this.propertiesList.map((p) =>
-  //   //   p.id === property.id ? property : p
-  //   // );
-  // }
 
   async deleteProperty(token: string, propertyId: number) {
     console.log("Eliminando propiedad");
     console.log(propertyId);
     const data = await deletedProperty(token, propertyId);
     console.table(data);
-
-    // this.propertiesList = this.propertiesList.filter(
-    //   (p) => p.id !== propertyId
-    // );
+    if (data.success) {
+      return await this.getPropertiesList(token);
+    }
+    return false;
   }
 }
 

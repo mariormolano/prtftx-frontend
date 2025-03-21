@@ -1,37 +1,73 @@
 "use client";
+import { useEffect } from "react";
 import { useStore } from "exome/react";
+import { useRouter } from "next/navigation";
+import useAuthToken from "@/features/auth/useAuthToken";
+
 import Box from "@mui/material/Box";
 import Header from "@/components/Header";
 import Tables from "@/components/tables/Tables";
-import { authStore } from "@/features/auth/authStore";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import DrawerPanel from "@/components/DrawerPanel";
-import useAuthToken from "@/features/auth/useAuthToken";
+
+import { authStore } from "@/features/auth/authStore";
+import { typesStore } from "@/features/types/typesStore";
+import { propertiesStore } from "@/features/properties/propertiesStore";
 
 export default function Dashboard() {
   const router = useRouter();
-  const { tokenStatus, setTokenStatus } = useStore(authStore);
-  const { token } = useAuthToken();
+
+  const { token, isAuthenticated, removeToken } = useAuthToken();
+
+  const { logout } = useStore(authStore);
+  const { getTypesList } = useStore(typesStore);
+  const { getPropertiesList } = useStore(propertiesStore);
 
   useEffect(() => {
-    if (tokenStatus === 0) {
-      if (typeof token !== "object") {
-        if (token.length > 0) {
-          setTokenStatus(2);
-        } else {
-          setTokenStatus(1);
+    if (!isAuthenticated()) {
+      console.log("No autenticado redirigiendo a login desde Dashboard", token);
+      router.push("/login");
+    }
+    const getTypes = async () => {
+      if (isAuthenticated()) {
+        console.log("Solicitud de tipos");
+        const res = await getTypesList(token as string);
+        if (!res) {
+          console.log(
+            "Error en la solicitud de tipos redirigiendo a login ",
+            res
+          );
+          logout();
+          removeToken();
           router.push("/login");
         }
       }
-    }
-  }, [token]);
+    };
+
+    const getProperties = async () => {
+      if (isAuthenticated()) {
+        console.log("Solicitud de propiedades");
+        const res = await getPropertiesList(token as string);
+        if (!res) {
+          console.log(
+            "Error en la solicitud de propiedades redirigiendo a login ",
+            res
+          );
+          logout();
+          removeToken();
+          router.push("/login");
+        }
+      }
+    };
+
+    getTypes();
+    getProperties();
+  }, []);
   return (
     <>
       <Header />
       <Box my={2} mb={10}>
         <DrawerPanel />
-        {tokenStatus === 2 ? <Tables /> : "No autorizado"}
+        {isAuthenticated() ? <Tables /> : "No autorizado"}
       </Box>
     </>
   );

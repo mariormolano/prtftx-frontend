@@ -13,12 +13,12 @@ const getTypes = async (token: string) => {
     },
   };
   const res = await fetch(`${BackendUrl}/types`, config);
-
-  const types = await res.json();
-
-  return types.types
-    ? (types.types[0] as TypesInterface[])
-    : ([] as TypesInterface[]);
+  const data = await res.json();
+  if (res.status < 300) {
+    console.log(data);
+    return data;
+  }
+  return { success: false, message: data.message };
 };
 
 const getTypesById = async (token: string, id: number) => {
@@ -30,10 +30,12 @@ const getTypesById = async (token: string, id: number) => {
     },
   };
   const res = await fetch(`${BackendUrl}/types/${id}`, config);
-
-  const type = await res.json();
-
-  return type;
+  const data = await res.json();
+  if (res.status < 300) {
+    console.log(data);
+    return data;
+  }
+  return { success: false, message: data.message };
 };
 
 const createType = async (
@@ -49,10 +51,12 @@ const createType = async (
     body: JSON.stringify(types),
   };
   const res = await fetch(`${BackendUrl}/types`, config);
-
-  const type = await res.json();
-
-  return type;
+  const data = await res.json();
+  if (res.status < 300) {
+    console.log(data);
+    return data;
+  }
+  return { success: false, message: data.message };
 };
 
 const updateType = async (token: string, types: TypesInterface) => {
@@ -65,10 +69,12 @@ const updateType = async (token: string, types: TypesInterface) => {
     body: JSON.stringify(types),
   };
   const res = await fetch(`${BackendUrl}/types/${types.id}`, config);
-
-  const type = await res.json();
-
-  return type;
+  const data = await res.json();
+  if (res.status < 300) {
+    console.log(data);
+    return data;
+  }
+  return { success: false, message: data.message };
 };
 
 const deletedType = async (token: string, id: number) => {
@@ -80,10 +86,12 @@ const deletedType = async (token: string, id: number) => {
     },
   };
   const res = await fetch(`${BackendUrl}/types/${id}`, config);
-
-  const type = await res.json();
-
-  return type;
+  const data = await res.json();
+  if (res.status < 300) {
+    console.log(data);
+    return data;
+  }
+  return { success: false, message: data.message };
 };
 
 export { getTypes, getTypesById, createType, updateType, deletedType };

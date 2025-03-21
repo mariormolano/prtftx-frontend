@@ -1,5 +1,8 @@
 "use client";
 import { useStore } from "exome/react";
+import { useRouter } from "next/navigation";
+import useAuthToken from "@/features/auth/useAuthToken";
+import { useState } from "react";
 import {
   FormGroup,
   MenuItem,
@@ -13,13 +16,12 @@ import {
 } from "@mui/material";
 
 import { authStore } from "@/features/auth/authStore";
-import { useRouter } from "next/navigation";
 import { roleEnum } from "@/features/auth/roleEnum";
-import { useState } from "react";
 
 const RegisterForm = () => {
   const router = useRouter();
-  const { register, showLoginModal } = useStore(authStore);
+  const { register, serverToken, showLoginModal } = useStore(authStore);
+  const { saveToken, token } = useAuthToken();
 
   const [role, setRole] = useState<roleEnum>(roleEnum.USER);
   const [name, setName] = useState("");
@@ -29,9 +31,12 @@ const RegisterForm = () => {
   const handleRegister = async () => {
     const res = await register(name, email, password, role);
     if (res) {
-      console.log("Register success ", res);
+      saveToken(serverToken);
       showLoginModal();
-      router.push("/login");
+      console.log("Usuario creado correctamente ", token);
+      router.push("/dashboard");
+    } else {
+      alert("Error al crear usuario");
     }
   };
 
