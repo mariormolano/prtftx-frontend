@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Proyecto de Gestión de Tipos y Propiedades
 
-## Getting Started
+Este proyecto es una interfaz frontend para gestionar tipos (persona, organización, evento, lugar, etc.) y propiedades (nombre, fecha de nacimiento, estado civil, dirección, color, etc.).
 
-First, run the development server:
+## Tecnologías
+- **Frontend:** Next.js v15) y Material UI.
+- **Repositorio de código:** GitHub.
+- **Despliegue:** Render (plan Hobby) o similar.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Funcionalidades Principales
+### Autenticación y Roles
+- **Inicio de Sesión:** Formulario para iniciar sesión y obtener un token JWT.
+- **Control de Acceso:** Mostrar/ocultar botones y funcionalidades basadas en el rol del usuario.
+  - **Admin:** Puede crear, editar y eliminar tipos y propiedades.
+  - **User:** Solo puede ver tipos y propiedades (acceso de solo lectura).
+
+### Tipos
+- **Listado de Tipos:** Tabla con los tipos disponibles.
+- **Creación de Tipos:** Formulario en un Drawer con los campos: nombre, descripción y propiedades asignadas.
+- **Edición de Tipos:** Formulario prellenado en un Drawer.
+- **Eliminación de Tipos:** Confirmación en un Drawer o diálogo simple.
+
+### Propiedades
+- **Listado de Propiedades:** Tabla con las propiedades disponibles.
+- **Creación de Propiedades:** Formulario en un Drawer con los campos: nombre y tipo de propiedad.
+- **Edición de Propiedades:** Formulario prellenado en un Drawer.
+- **Eliminación de Propiedades:** Confirmación en un Drawer o diálogo simple.
+
+### Conexión con el Backend
+- **Consumo de APIs:** Se usó `fetch` para peticiones HTTP.
+- **Gestión del Token JWT:** Almacenar en localStorage o cookie y enviarlo en las peticiones.
+
+### Diseño y Estilo
+- **Material UI:** Uso de componentes predefinidos (Tabla, Formulario, Drawer).
+- **Responsive Design:** Adaptación a móviles y escritorio.
+
+## Instalación y Configuración
+### Clonación del Repositorio
+```sh
+# Clonar el repositorio
+git clone https://github.com/mariormolano/prtftx-frontend.git
+cd prtftx-frontend
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Instalación de Dependencias
+```sh
+# Instalar las dependencias
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Configuración de Variables de Entorno
+Crear un archivo `.env` en la raíz del proyecto y añadir la variables:
+```env
+BACKEND_URL=http://localhost:4000/api
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Ejecución en Local
+```sh
+# Ejecutar el servidor de desarrollo
+npm run dev
+```
+La aplicación estará disponible en `http://localhost:3000`.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+## Arquitectura
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Para este proyecto use Arquitectura de Modulos Simples, que permite dar una buena estructura sobretodo al frontend.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**app** (con las rutas de dashboard y login)
+**components**  (elemntos del UI)
+**features** (Modelos por caracteristica)
+**libs** (Mockups usados para pruebas antes de conectar el backend)
+**types** (tipos de datos)
 
-## Deploy on Vercel
+## Conexión con el backend
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+la conexión se hizo con medio de servisios desde servidor 'use server', lo hace efectivo para enmascarar datos suseptibles, ademas se usó el gestor de estados Exome, por su velocidad, liviano y simplicidad
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
