@@ -29,7 +29,10 @@ const RegisterForm = () => {
   const [password, setPassword] = useState("");
 
   const handleRegister = async () => {
+    console.log("Registrando usuario");
     const res = await register(name, email, password, role);
+    console.log("Usuario registrado", res);
+
     if (res) {
       saveToken(serverToken as string);
       showLoginModal();
