@@ -34,8 +34,10 @@ class AuthStore extends Exome {
       this.isAuth = true;
       this.tokenStatus = 2;
       return true;
+    } else {
+      console.log(data);
+      return false;
     }
-    return false;
   }
 
   public isValidate() {

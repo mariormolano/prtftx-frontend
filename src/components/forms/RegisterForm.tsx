@@ -13,6 +13,7 @@ import {
   Button,
   InputLabel,
   Input,
+  Typography,
 } from "@mui/material";
 
 import { authStore } from "@/features/auth/authStore";
@@ -28,8 +29,11 @@ const RegisterForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [registerStatus, setRegisterStatus] = useState(0);
+
   const handleRegister = async () => {
     console.log("Registrando usuario");
+    setRegisterStatus(1);
     const res = await register(name, email, password, role);
     console.log("Usuario registrado", res);
 
@@ -95,9 +99,16 @@ const RegisterForm = () => {
           required
         />
         <FormHelperText>Ingresa la contraseña</FormHelperText>
+        <Typography variant="caption" color="error">
+          {registerStatus === 1 && "Registrando..."}
+        </Typography>
       </FormControl>
 
-      <Button variant="contained" onClick={handleRegister}>
+      <Button
+        variant="contained"
+        onClick={handleRegister}
+        disabled={registerStatus === 1}
+      >
         Registrar
       </Button>
     </FormGroup>
