@@ -1,6 +1,5 @@
 "use client";
 import { useStore } from "exome/react";
-import { useEffect } from "react";
 
 import Box from "@mui/material/Box";
 import { Tab } from "@mui/material";
@@ -16,30 +15,13 @@ import useAuthToken from "@/features/auth/useAuthToken";
 export default function Login() {
   const { loginModal, showLoginModal, showRegisterModal } = useStore(authStore);
 
-  const { tokenStatus, setTokenStatus } = useStore(authStore);
-  const { token } = useAuthToken();
-
-  useEffect(() => {
-    if (tokenStatus === 0) {
-      if (typeof token !== "object") {
-        if (token.length > 0) {
-          setTokenStatus(2);
-        } else {
-          setTokenStatus(1);
-        }
-      }
-    }
-  }, [token]);
+  const { isAuthenticated } = useAuthToken();
 
   const SelectForm = () => {
-    console.log("Token", tokenStatus);
-    if (tokenStatus > 0) {
-      if (tokenStatus === 2) {
-        return <LogoutForm />;
-      }
-      if (tokenStatus === 1) {
-        return <LoginFrom />;
-      }
+    if (isAuthenticated()) {
+      return <LogoutForm />;
+    } else {
+      return <LoginFrom />;
     }
   };
 
@@ -50,10 +32,16 @@ export default function Login() {
         mb={10}
         sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
       >
-        <TabContext value={loginModal}>
+        <TabContext value={isAuthenticated() ? 1 : loginModal}>
           <TabList>
-            <Tab label="Iniciar sesión" value={1} onClick={showLoginModal} />
-            <Tab label="Registro" value={2} onClick={showRegisterModal} />
+            <Tab
+              label={isAuthenticated() ? "Cerrar sesión" : "Iniciar sesión"}
+              value={1}
+              onClick={showLoginModal}
+            />
+            {!isAuthenticated() && (
+              <Tab label="Registro" value={2} onClick={showRegisterModal} />
+            )}
           </TabList>
         </TabContext>
         {loginModal === 1 ? <SelectForm /> : <RegisterForm />}

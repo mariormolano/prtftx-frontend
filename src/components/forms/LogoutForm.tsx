@@ -2,7 +2,7 @@
 
 import { useStore } from "exome/react";
 import { useEffect } from "react";
-import { FormGroup, FormLabel, Button } from "@mui/material";
+import { FormGroup, Button } from "@mui/material";
 
 import useAuthToken from "@/features/auth/useAuthToken";
 
@@ -36,7 +36,6 @@ const LogoutForm = () => {
         mt: 2,
       }}
     >
-      <FormLabel>Cerrar sesión</FormLabel>
       <Button variant="contained" onClick={handleLogout}>
         Cerrar sesión
       </Button>

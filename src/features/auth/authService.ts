@@ -1,5 +1,4 @@
 "use server";
-
 import { roleEnum } from "./roleEnum";
 
 const BackendUrl = process.env.BACKEND_URL || "http://localhost:3001";
@@ -16,12 +15,8 @@ const login = async (email: string, password: string) => {
     }),
   };
   const res = await fetch(`${BackendUrl}/login`, config);
-
-  const user = await res.json();
-
-  console.log(user);
-
-  return user;
+  const data = await res.json();
+  return data;
 };
 
 const register = async (
@@ -43,10 +38,8 @@ const register = async (
     }),
   };
   const res = await fetch(`${BackendUrl}/register`, config);
-  if (res.status === 200) {
-    return true;
-  }
-  return false;
+  const data = await res.json();
+  return data;
 };
 
 const validate = async (token: string) => {
@@ -58,10 +51,7 @@ const validate = async (token: string) => {
         Authorization: `Bearer ${token}`,
       },
     };
-    console.log("Solicitud a la API ", BackendUrl + "/verify");
-
     const res = await fetch(`${BackendUrl}/verify`, config);
-    console.log("Respuesta de la API ", res.status);
     if (res.status < 300) {
       return true;
     }

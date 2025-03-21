@@ -41,9 +41,14 @@ class TypesStore extends Exome {
 
   async getTypesList(token: string) {
     const data = await getTypes(token);
-    data.map((type: TypesInterface) => {
-      this.typesList.push(type);
-    });
+    console.log("Solicitud de datos de tipos");
+    console.table(data);
+    if (data.success) {
+      const types = data.types
+      this.typesList = types as TypesInterface[];
+      return true
+    } 
+    return false;
   }
 
   async saveType(
@@ -55,32 +60,20 @@ class TypesStore extends Exome {
     const data = await createType(token, type);
     console.table(data);
     if (data.success) {
-      const newType = {
-        id: this.typesList.length + 1,
-        createdAt: new Date().toISOString(),
-        ...type,
-      } as TypesInterface;
-      this.typesList.push(newType);
+      return await this.getTypesList(token);
     }
+    return false;
   }
 
   async updateType(token: string, type: TypesInterface) {
     console.log("Actualizando tipo");
     console.log(type);
-
     const data = await updateType(token, type);
     console.table(data);
     if (data.success) {
-      const newTypeList = this.typesList.map((t) =>
-        t.id === type.id ? type : t
-      );
-      const validate = {
-        oldTypeList: this.typesList,
-        newTypeList: newTypeList,
-      };
-      console.table(validate);
-      this.typesList = newTypeList;
+      return await this.getTypesList(token);
     }
+    return false;
   }
 
   async deleteType(token: string, typeId: number) {
@@ -89,8 +82,9 @@ class TypesStore extends Exome {
     const data = await deletedType(token, typeId);
     console.table(data);
     if (data.success) {
-      this.typesList = this.typesList.filter((t) => t.id !== typeId);
+      return await this.getTypesList(token);
     }
+    return false;
   }
 }
 

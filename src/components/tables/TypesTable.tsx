@@ -14,17 +14,11 @@ import EditionButtons from "../EditionButtons";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 
 import { TypesInterface } from "@/features/types/typesInterface";
-import { useEffect } from "react";
 
 import { typesStore } from "@/features/types/typesStore";
-import { propertiesStore } from "@/features/properties/propertiesStore";
-
-import useAuthToken from "@/features/auth/useAuthToken";
 
 const TypesTable = () => {
-  const { getTypesList, typesList } = useStore(typesStore);
-  const { getPropertiesList, propertiesList } = useStore(propertiesStore);
-  const { token } = useAuthToken();
+  const { typesList } = useStore(typesStore);
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -44,29 +38,6 @@ const TypesTable = () => {
       border: 0,
     },
   }));
-
-  useEffect(() => {
-    if (token) {
-      if (typesList.length === 0) {
-        console.log("Solicitud de datos");
-        getTypesList(token);
-      } else {
-      }
-    }
-    console.log("Types List");
-    console.log(typesList);
-  }, [getTypesList, token, typesList]);
-
-  useEffect(() => {
-    if (token) {
-      if (propertiesList.length === 0) {
-        getPropertiesList(token);
-      } else {
-      }
-      console.log("Properties List");
-      console.table(propertiesList);
-    }
-  }, [getPropertiesList, propertiesList, propertiesList.length]);
 
   return (
     <Table size="small" sx={{ minWidth: 650, width: "100%" }}>

@@ -13,14 +13,12 @@ const getProperties = async (token: string) => {
     },
   };
   const res = await fetch(`${BackendUrl}/properties`, config);
-
-  console.log("Respuesta de propiedades", res);
-
-  const properties = await res.json();
-
-  return properties.properties
-    ? (properties.properties[0] as PropertiesInterface[])
-    : ([] as PropertiesInterface[]);
+  const data = await res.json();
+  if (res.status < 300) {
+    console.log(data);
+    return data;
+  }
+  return { success: false, message: data.message };
 };
 
 const getPropertiesById = async (token: string, id: number) => {
@@ -32,10 +30,11 @@ const getPropertiesById = async (token: string, id: number) => {
     },
   };
   const res = await fetch(`${BackendUrl}/properties/${id}`, config);
-
-  const property = await res.json();
-
-  return property;
+  const data = await res.json();
+  if (res.status < 300) {
+    return data;
+  }
+  return { success: false, message: data.message };
 };
 
 const createProperty = async (
@@ -51,10 +50,11 @@ const createProperty = async (
     body: JSON.stringify(properties),
   };
   const res = await fetch(`${BackendUrl}/properties`, config);
-
-  const property = await res.json();
-
-  return property;
+  const data = await res.json();
+  if (res.status < 300) {
+    return data;
+  }
+  return { success: false, message: data.message };
 };
 
 const updateProperty = async (
@@ -70,10 +70,11 @@ const updateProperty = async (
     body: JSON.stringify(properties),
   };
   const res = await fetch(`${BackendUrl}/properties/${properties.id}`, config);
-
-  const property = await res.json();
-
-  return property;
+  const data = await res.json();
+  if (res.status < 300) {
+    return data;
+  }
+  return { success: false, message: data.message };
 };
 
 const deletedProperty = async (token: string, propertyId: number) => {
@@ -85,10 +86,11 @@ const deletedProperty = async (token: string, propertyId: number) => {
     },
   };
   const res = await fetch(`${BackendUrl}/properties/${propertyId}`, config);
-
-  const property = await res.json();
-
-  return property;
+  const data = await res.json();
+  if (res.status < 300) {
+    return data;
+  }
+  return { success: false, message: data.message };
 };
 
 export {

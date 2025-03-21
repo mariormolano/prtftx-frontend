@@ -2,25 +2,25 @@
 import { Exome } from "exome";
 import { login, register } from "./authService";
 import { roleEnum } from "./roleEnum";
-
 class AuthStore extends Exome {
   public isAuth: boolean = false;
   public loginModal: number = 1;
   public role: roleEnum = roleEnum.NONE;
-  public token: string | null = null;
+  public serverToken: string = "";
   public tokenStatus: number = 0;
 
   public async login(email: string, password: string) {
-    console.log("Login: ", email, password);
-
-    const user = await login(email, password);
-    this.role = user.role as roleEnum;
-    this.token = user.token;
-    if (user.token) {
+    const data = await login(email, password);
+    console.log("Data desde Auth store: ");
+    console.table(data);
+    if (data.success) {
+      this.role = data.role as roleEnum;
+      this.serverToken = data.token;
       this.isAuth = true;
       this.tokenStatus = 2;
+      return true;
     }
-    return user.token;
+    return false;
   }
 
   public async register(
@@ -29,9 +29,15 @@ class AuthStore extends Exome {
     password: string,
     roles: roleEnum
   ) {
-    const user = await register(name, email, password, roles);
-    console.log("User: ", user);
-    return user;
+    const data = await register(name, email, password, roles);
+    if (data.success) {
+      this.role = data.role as roleEnum;
+      this.serverToken = data.token;
+      this.isAuth = true;
+      this.tokenStatus = 2;
+      return true;
+    }
+    return false;
   }
 
   public isValidate() {

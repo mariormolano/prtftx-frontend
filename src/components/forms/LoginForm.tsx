@@ -20,7 +20,7 @@ import { redirect, useRouter } from "next/navigation";
 const LoginForm = () => {
   const router = useRouter();
   const { saveToken } = useAuthToken();
-  const { login } = useStore(authStore);
+  const { login, serverToken } = useStore(authStore);
   const [loginSuscess, setLoginSuscess] = useState(false);
 
   const [email, setEmail] = useState("");
@@ -30,7 +30,7 @@ const LoginForm = () => {
     const res = await login(email, password);
     if (res) {
       console.log("Login success ", res);
-      saveToken(res);
+      saveToken(serverToken);
       setLoginSuscess(true);
       router.push("/dashboard");
     } else {
