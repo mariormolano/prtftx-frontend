@@ -41,11 +41,13 @@ class TypesStore extends Exome {
   async getTypesList(token: string) {
     const data = await getTypes(token);
     if (data.success) {
-      const types = data.types
+      const types = data.types;
       this.typesList = types as TypesInterface[];
-      return true
-    } 
-    return false;
+      return true;
+    } else {
+      console.log(data);
+      return false;
+    }
   }
 
   async saveType(

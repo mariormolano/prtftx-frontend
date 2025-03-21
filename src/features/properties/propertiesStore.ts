@@ -43,6 +43,7 @@ class PropertiesStore extends Exome {
       this.propertiesList = properties as PropertiesInterface[];
       return true;
     } else {
+      console.log(data);
       return false;
     }
   }
