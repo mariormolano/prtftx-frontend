@@ -15,7 +15,6 @@ const getTypes = async (token: string) => {
   const res = await fetch(`${BackendUrl}/types`, config);
   const data = await res.json();
   if (res.status < 300) {
-    console.log(data);
     return data;
   }
   return { success: false, message: data.message };
@@ -32,7 +31,6 @@ const getTypesById = async (token: string, id: number) => {
   const res = await fetch(`${BackendUrl}/types/${id}`, config);
   const data = await res.json();
   if (res.status < 300) {
-    console.log(data);
     return data;
   }
   return { success: false, message: data.message };
@@ -53,7 +51,6 @@ const createType = async (
   const res = await fetch(`${BackendUrl}/types`, config);
   const data = await res.json();
   if (res.status < 300) {
-    console.log(data);
     return data;
   }
   return { success: false, message: data.message };
@@ -71,7 +68,6 @@ const updateType = async (token: string, types: TypesInterface) => {
   const res = await fetch(`${BackendUrl}/types/${types.id}`, config);
   const data = await res.json();
   if (res.status < 300) {
-    console.log(data);
     return data;
   }
   return { success: false, message: data.message };
@@ -88,7 +84,6 @@ const deletedType = async (token: string, id: number) => {
   const res = await fetch(`${BackendUrl}/types/${id}`, config);
   const data = await res.json();
   if (res.status < 300) {
-    console.log(data);
     return data;
   }
   return { success: false, message: data.message };

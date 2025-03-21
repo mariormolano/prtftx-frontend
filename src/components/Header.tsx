@@ -1,11 +1,13 @@
 "use client";
 import { useStore } from "exome/react";
+import useAuthToken from "@/features/auth/useAuthToken";
 import { Box, Button } from "@mui/material";
 import { typesStore } from "@/features/types/typesStore";
 
 const Header = () => {
+  const { isAuthenticated } = useAuthToken();
   const { typesState, showTypes, showProperties } = useStore(typesStore);
-  return (
+  return isAuthenticated() && (
     <Box
       sx={{
         display: "flex",

@@ -21,7 +21,7 @@ import { roleEnum } from "@/features/auth/roleEnum";
 const RegisterForm = () => {
   const router = useRouter();
   const { register, serverToken, showLoginModal } = useStore(authStore);
-  const { saveToken, token } = useAuthToken();
+  const { saveToken } = useAuthToken();
 
   const [role, setRole] = useState<roleEnum>(roleEnum.USER);
   const [name, setName] = useState("");
@@ -31,9 +31,8 @@ const RegisterForm = () => {
   const handleRegister = async () => {
     const res = await register(name, email, password, role);
     if (res) {
-      saveToken(serverToken);
+      saveToken(serverToken as string);
       showLoginModal();
-      console.log("Usuario creado correctamente ", token);
       router.push("/dashboard");
     } else {
       alert("Error al crear usuario");

@@ -15,7 +15,6 @@ const getProperties = async (token: string) => {
   const res = await fetch(`${BackendUrl}/properties`, config);
   const data = await res.json();
   if (res.status < 300) {
-    console.log(data);
     return data;
   }
   return { success: false, message: data.message };

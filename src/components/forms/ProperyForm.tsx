@@ -42,7 +42,6 @@ const ProperyForm = () => {
   );
 
   useEffect(() => {
-    console.log(propertiesMode);
     if (
       propertiesMode === Modes.EDIT &&
       selectedProperty &&
@@ -69,11 +68,6 @@ const ProperyForm = () => {
         createdAt: selectedProperty.createdAt,
         value: propertyValue,
       };
-      // const validate = {
-      //   selectedProperty,
-      //   updatedProperty,
-      // };
-      //console.table(validate);
       if (token) {
         updateProperty(token, updatedProperty);
         setIsOpen(false);

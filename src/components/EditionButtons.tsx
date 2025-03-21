@@ -35,13 +35,11 @@ const EditionButtons: React.FC<EditionButtonsProps> = ({
 
   const handleEdit = () => {
     if (types) {
-      console.log(types);
       setSelectedType(types);
       setTypesMoodeEdit();
       setIsOpen(true);
     }
     if (properties) {
-      console.log(properties);
       setSelectedProperty(properties);
       setPropertiesModeEdit();
       setIsOpen(true);
@@ -51,11 +49,9 @@ const EditionButtons: React.FC<EditionButtonsProps> = ({
   const handleDelete = () => {
     if (token) {
       if (types) {
-        console.log(types);
         deleteType(token, types.id);
       }
       if (properties) {
-        console.log(properties);
         deleteProperty(token, properties.id);
       }
     }

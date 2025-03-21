@@ -30,7 +30,7 @@ const LoginForm = () => {
     const res = await login(email, password);
     if (res) {
       console.log("Login success ", res);
-      saveToken(serverToken);
+      saveToken(serverToken as string);
       setLoginSuscess(true);
       router.push("/dashboard");
     } else {

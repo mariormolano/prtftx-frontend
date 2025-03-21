@@ -28,8 +28,6 @@ const DownAppBar = () => {
   });
 
   const handleNew = () => {
-    console.log(typesMode);
-
     if (typesMode === "NEW") {
       setTypesModeNew();
       setIsOpen(true);

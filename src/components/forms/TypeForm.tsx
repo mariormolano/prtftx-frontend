@@ -37,7 +37,6 @@ const TypeForm = () => {
   const [propertiesOptiones, setPropertiesOptions] = useState<string[]>([]);
 
   useEffect(() => {
-    console.log(typesMode);
     if (typesMode === Modes.EDIT && selectedType && propertiesList.length > 0) {
       setName(selectedType.name);
       setDescription(selectedType.description);
@@ -66,11 +65,6 @@ const TypeForm = () => {
           ) as PropertiesInterface;
         }),
       } as TypesInterface;
-      const validate = {
-        oldType: selectedType,
-        newType: updatedType,
-      };
-      console.table(validate);
       if (token) {
         updateType(token, updatedType);
       }
@@ -143,7 +137,6 @@ const TypeForm = () => {
                   checked={
                     propertiesOptiones.includes(property.name) ? true : false
                   }
-                  //onChange={(e) => console.log(e.target.checked)}
                 />
                 <ListItemText primary={property.name} />
               </MenuItem>

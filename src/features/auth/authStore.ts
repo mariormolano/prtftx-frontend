@@ -6,13 +6,11 @@ class AuthStore extends Exome {
   public isAuth: boolean = false;
   public loginModal: number = 1;
   public role: roleEnum = roleEnum.NONE;
-  public serverToken: string = "";
+  public serverToken: string | null = null;
   public tokenStatus: number = 0;
 
   public async login(email: string, password: string) {
     const data = await login(email, password);
-    console.log("Data desde Auth store: ");
-    console.table(data);
     if (data.success) {
       this.role = data.role as roleEnum;
       this.serverToken = data.token;

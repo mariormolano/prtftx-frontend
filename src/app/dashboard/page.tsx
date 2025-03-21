@@ -12,21 +12,18 @@ import DrawerPanel from "@/components/DrawerPanel";
 import { authStore } from "@/features/auth/authStore";
 import { typesStore } from "@/features/types/typesStore";
 import { propertiesStore } from "@/features/properties/propertiesStore";
+import { Button } from "@mui/material";
 
 export default function Dashboard() {
   const router = useRouter();
 
   const { token, isAuthenticated, removeToken } = useAuthToken();
 
-  const { logout } = useStore(authStore);
+  const { logout, serverToken } = useStore(authStore);
   const { getTypesList } = useStore(typesStore);
   const { getPropertiesList } = useStore(propertiesStore);
 
   useEffect(() => {
-    if (!isAuthenticated()) {
-      console.log("No autenticado redirigiendo a login desde Dashboard", token);
-      router.push("/login");
-    }
     const getTypes = async () => {
       if (isAuthenticated()) {
         console.log("Solicitud de tipos");
@@ -61,13 +58,22 @@ export default function Dashboard() {
 
     getTypes();
     getProperties();
-  }, []);
+  }, [isAuthenticated(), serverToken]);
+
+  const handleLogin = () => {
+    router.push("/login");
+  };
+
   return (
     <>
       <Header />
       <Box my={2} mb={10}>
         <DrawerPanel />
-        {isAuthenticated() ? <Tables /> : "No autorizado"}
+        {isAuthenticated() ? (
+          <Tables />
+        ) : (
+          <Button onClick={handleLogin}>Iniciar sesión</Button>
+        )}
       </Box>
     </>
   );
