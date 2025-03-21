@@ -32,7 +32,6 @@ const LoginForm = () => {
       console.log("Login success ", res);
       saveToken(res);
       setLoginSuscess(true);
-      //redirect("/dashboard");
       router.push("/dashboard");
     } else {
       console.log("Login failed");

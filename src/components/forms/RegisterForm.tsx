@@ -1,3 +1,5 @@
+"use client";
+import { useStore } from "exome/react";
 import {
   FormGroup,
   MenuItem,
@@ -10,7 +12,29 @@ import {
   Input,
 } from "@mui/material";
 
+import { authStore } from "@/features/auth/authStore";
+import { useRouter } from "next/navigation";
+import { roleEnum } from "@/features/auth/roleEnum";
+import { useState } from "react";
+
 const RegisterForm = () => {
+  const router = useRouter();
+  const { register, showLoginModal } = useStore(authStore);
+
+  const [role, setRole] = useState<roleEnum>(roleEnum.USER);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleRegister = async () => {
+    const res = await register(name, email, password, role);
+    if (res) {
+      console.log("Register success ", res);
+      showLoginModal();
+      router.push("/login");
+    }
+  };
+
   return (
     <FormGroup
       sx={{
@@ -24,28 +48,51 @@ const RegisterForm = () => {
       <FormLabel>Registrar usuario nuevo</FormLabel>
       <FormControl variant="standard">
         <InputLabel htmlFor="role">Rol</InputLabel>
-        <Select id="role" defaultValue={1}>
-          <MenuItem value={1}>USER</MenuItem>
-          <MenuItem value={2}>ADMIN</MenuItem>
+        <Select
+          id="role"
+          value={role}
+          onChange={(e) => setRole(e.target.value as roleEnum)}
+          defaultValue={roleEnum.USER}
+        >
+          <MenuItem value={roleEnum.USER}>USER</MenuItem>
+          <MenuItem value={roleEnum.ADMIN}>ADMIN</MenuItem>
         </Select>
       </FormControl>
       <FormControl variant="standard">
         <InputLabel htmlFor="name">Name</InputLabel>
-        <Input id="Name" />
+        <Input
+          id="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
         <FormHelperText>Ingresa el nombre</FormHelperText>
       </FormControl>
       <FormControl variant="standard">
         <InputLabel htmlFor="email">Email</InputLabel>
-        <Input id="email" />
+        <Input
+          id="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
         <FormHelperText>Ingresa en email</FormHelperText>
       </FormControl>
       <FormControl variant="standard">
         <InputLabel htmlFor="password">Contaseña</InputLabel>
-        <Input id="password" type="password" />
+        <Input
+          id="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
         <FormHelperText>Ingresa la contraseña</FormHelperText>
       </FormControl>
 
-      <Button variant="contained">Registrar</Button>
+      <Button variant="contained" onClick={handleRegister}>
+        Registrar
+      </Button>
     </FormGroup>
   );
 };

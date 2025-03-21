@@ -11,7 +11,10 @@ import { PropertiesInterface } from "@/features/properties/propertiesInterface";
 import { drawerStore } from "@/features/Drawer/drawerStore";
 import { typesStore } from "@/features/types/typesStore";
 import { propertiesStore } from "@/features/properties/propertiesStore";
+import { authStore } from "@/features/auth/authStore";
+
 import useAuthToken from "@/features/auth/useAuthToken";
+import { roleEnum } from "@/features/auth/roleEnum";
 
 interface EditionButtonsProps {
   types?: TypesInterface;
@@ -23,6 +26,7 @@ const EditionButtons: React.FC<EditionButtonsProps> = ({
   properties,
 }) => {
   const { token } = useAuthToken();
+  const { role } = useStore(authStore);
   const { setSelectedType, setTypesMoodeEdit, deleteType } =
     useStore(typesStore);
   const { setIsOpen } = useStore(drawerStore);
@@ -57,7 +61,7 @@ const EditionButtons: React.FC<EditionButtonsProps> = ({
     }
   };
 
-  return (
+  return role === roleEnum.ADMIN ? (
     <ButtonGroup sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>
       <IconButton edge="end" aria-label="editar" onClick={handleEdit}>
         <EditIcon sx={{ color: "text.secondary" }} />
@@ -66,7 +70,7 @@ const EditionButtons: React.FC<EditionButtonsProps> = ({
         <DeleteOutlineTwoToneIcon sx={{ color: "error.main" }} />
       </IconButton>
     </ButtonGroup>
-  );
+  ) : null;
 };
 
 export default EditionButtons;

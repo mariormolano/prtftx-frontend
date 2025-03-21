@@ -4,48 +4,34 @@ import Box from "@mui/material/Box";
 import Header from "@/components/Header";
 import Tables from "@/components/tables/Tables";
 import { authStore } from "@/features/auth/authStore";
-import { useEffect, useState } from "react";
-import { redirect } from "next/navigation";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import DrawerPanel from "@/components/DrawerPanel";
 import useAuthToken from "@/features/auth/useAuthToken";
-import { validate } from "@/features/auth/authService";
 
 export default function Dashboard() {
-  const { isValidate, logout } = useStore(authStore);
-  const [tokenStatus, setTokenStatus] = useState(false);
-  const { token, removeToken } = useAuthToken();
+  const router = useRouter();
+  const { tokenStatus, setTokenStatus } = useStore(authStore);
+  const { token } = useAuthToken();
 
   useEffect(() => {
-    console.log("Token", token);
-
-    if (token) {
-      validate(token)
-        .then((res) => {
-          if (res) {
-            setTokenStatus(true);
-            isValidate();
-            console.log("Token is valid");
-          } else {
-            logout();
-            removeToken();
-            console.log("Token is invalid");
-            redirect("/login");
-          }
-        })
-        .catch(() => {
-          logout();
-          removeToken();
-          console.log("Token is invalid");
-          redirect("/login");
-        });
+    if (tokenStatus === 0) {
+      if (typeof token !== "object") {
+        if (token.length > 0) {
+          setTokenStatus(2);
+        } else {
+          setTokenStatus(1);
+          router.push("/login");
+        }
+      }
     }
-  }, [isValidate, token]);
+  }, [token]);
   return (
     <>
       <Header />
       <Box my={2} mb={10}>
         <DrawerPanel />
-        {tokenStatus ? <Tables /> : "No autorizado"}
+        {tokenStatus === 2 ? <Tables /> : "No autorizado"}
       </Box>
     </>
   );
