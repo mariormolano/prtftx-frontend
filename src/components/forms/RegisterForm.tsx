@@ -43,6 +43,7 @@ const RegisterForm = () => {
       router.push("/dashboard");
     } else {
       alert("Error al crear usuario");
+      setRegisterStatus(0);
     }
   };
 
