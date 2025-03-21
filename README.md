@@ -3,7 +3,7 @@
 Este proyecto es una interfaz frontend para gestionar tipos (persona, organización, evento, lugar, etc.) y propiedades (nombre, fecha de nacimiento, estado civil, dirección, color, etc.).
 
 ## Tecnologías
-- **Frontend:** Next.js v15) y Material UI.
+- **Frontend:** Next.js v15 y Material UI.
 - **Repositorio de código:** GitHub.
 - **Despliegue:** Render (plan Hobby) o similar.
 
